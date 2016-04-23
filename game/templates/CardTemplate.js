@@ -1,5 +1,7 @@
 "use strict";
-var Card = require('./Card');
+var Card = require('./../match/objects/Card');
+
+var NodeCouchDb = require('node-couchdb');
 
 /**
  * CardTemplate is a template class for Card.
