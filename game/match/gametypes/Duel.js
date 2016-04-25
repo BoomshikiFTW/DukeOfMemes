@@ -19,20 +19,7 @@ class Duel extends Match {
 
     }
 
-    /**
-     * Starts the game for both players.
-     * Each draws a card.
-     * The first turn is decided randomly.
-     */
-    startgame() {
-        this.whos_turn = this.player_boards[Random.integer(0, 1)(eng)];
 
-        // draws cards for each player
-        for (var i = 0; i < this.starting_cards; i++) {
-            this.player_boards[0].draw();
-            this.player_boards[1].draw();
-        }
-    }
 
 
 

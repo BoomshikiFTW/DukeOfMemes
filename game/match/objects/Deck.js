@@ -1,7 +1,9 @@
 "use strict";
+var GameObject = require('./GameObject');
 
-class Deck {
-    constructor() {
+class Deck extends GameObject{
+    constructor(match) {
+        super(match);
         this.cards = [];
     }
 

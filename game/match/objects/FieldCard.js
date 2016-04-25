@@ -5,8 +5,8 @@
  */
 class FieldCard extends GameObject {
 
-    constructor(board, card) {
-        super();
+    constructor(match, board, card) {
+        super(match);
         this.board = board;
         this.card_template = card.card_template;
     }

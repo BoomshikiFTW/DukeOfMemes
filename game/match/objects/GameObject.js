@@ -7,8 +7,10 @@ var shortid = require('shortid');
  */
 class GameObject {
 
-    constructor() {
+    constructor(match) {
         this.id = shortid.generate();
+        this.match = match;
+        match.add_gameobject(this); //adds itself to the match
     }
 }
 

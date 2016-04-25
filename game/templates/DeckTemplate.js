@@ -1,4 +1,5 @@
 "use strict";
+var Deck = require('../objects/Deck');
 
 /**
  * In game instance for a 1v1 game.
@@ -14,6 +15,20 @@ class DeckTemplate {
         if (this.card_templates.length < size_limit){
             this.card_templates.append(card_template)
         }
+    }
+
+    /**
+     *
+     * @param match
+     * @param player
+     * @returns the new Deck object.
+     */
+    createDeck(match, player) {
+        var new_deck = new Deck();
+        for (var card_template in this.cards_templates) {
+            new_deck.addCard(card_template.makeCardFor(player));
+        }
+        return new_deck;
     }
 }
 

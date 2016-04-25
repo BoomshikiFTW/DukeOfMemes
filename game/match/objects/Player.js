@@ -1,9 +1,9 @@
 "use strict";
-var GameObject = require('GameObject');
+var GameObject = require('./GameObject');
 
 class Player extends GameObject {
-    constructor() {
-        super()
+    constructor(match) {
+        super(match);
     }
 }
 

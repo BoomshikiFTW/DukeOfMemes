@@ -9,7 +9,7 @@ var Deck = require('./match/objects/Deck.js');
 var Card = require('./match/objects/Card.js');
 var Hand = require('./match/objects/Hand.js');
 var Board = require('./match/objects/Board.js');
-var Duel = require('./match/gametypes/Duel.js');
+var Match = require('./match/Match');
 var PlayerBoard = require('./match/PlayerBoard.js');
 
 function start(req, res){

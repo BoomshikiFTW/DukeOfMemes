@@ -1,13 +1,13 @@
 "use strict";
 
-var GameObject = require('GameObject');
+var GameObject = require('./GameObject');
 
 /**
  * Holds a list of cards
  */
 class Hand extends GameObject {
-    constructor() {
-        super();
+    constructor(match) {
+        super(match);
         this.cards = []
     }
 

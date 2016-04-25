@@ -7,8 +7,8 @@
  */
 class ActionHandler {
 
-    constructor(player_boards) {
-        this.player_boards = player_boards;
+    constructor(match) {
+        this.match = match;
     }
 
     make_action(source_id, target_id) {

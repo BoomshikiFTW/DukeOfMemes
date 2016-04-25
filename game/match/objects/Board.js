@@ -1,5 +1,5 @@
 "use strict";
-var GameObject = require('GameObject');
+var GameObject = require('./GameObject');
 
 /**
  * Maintains the minions that one player has in play.
@@ -7,8 +7,8 @@ var GameObject = require('GameObject');
  */
 class Board extends GameObject {
 
-    constructor() {
-        super();
+    constructor(match) {
+        super(match);
         this.minions = [];
         this.field_card = null;
     }

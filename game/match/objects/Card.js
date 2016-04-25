@@ -1,6 +1,6 @@
 "use strict";
 
-var GameObject = require('GameObject');
+var GameObject = require('./GameObject.js');
 
 /**
  * In game instance of a card.
@@ -8,8 +8,8 @@ var GameObject = require('GameObject');
  */
 class Card extends GameObject{
 
-    constructor(player, card_template) {
-        super()
+    constructor(match, player, card_template) {
+        super(match);
         this.player = player;
         this.card_template = card_template;
     }

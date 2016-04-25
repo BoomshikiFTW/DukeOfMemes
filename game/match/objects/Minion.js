@@ -7,8 +7,8 @@ var GameObject = require('GameObject');
  */
 class Minion extends GameObject {
 
-    constructor(board, card) {
-        super();
+    constructor(match, board, card) {
+        super(match);
         this.card_template = card.card_template;
     }
 }
