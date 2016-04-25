@@ -11,6 +11,10 @@ class ActionHandler {
         this.match = match;
     }
 
+    draw() {
+
+    }
+
     make_action(source_id, target_id) {
 
     }

@@ -13,13 +13,14 @@ class Board extends GameObject {
         this.field_card = null;
     }
 
-    addMinion(minion) {
-        minion.setBoard(this);
+    add_minion(minion) {
+        minion.set_board(this);
         this.minions.append(minion);
+        //TODO: trigger on minion played event.
     }
 
 
-    setFieldCard(field_card) {
+    set_field_card(field_card) {
         minion.setBoard(this);
         this.minions.append(minion);
     }

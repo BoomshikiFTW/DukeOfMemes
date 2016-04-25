@@ -7,10 +7,18 @@ var GameObject = require('GameObject');
  */
 class Minion extends GameObject {
 
-    constructor(match, board, card) {
+    constructor(match, card_template) {
         super(match);
-        this.card_template = card.card_template;
+        this.card_template = card_template;
+        this.board = null;
+        this.attack = null;
+        this.health = null;
     }
+
+    set_board(board) {
+        this.board = board;
+    }
+
 }
 
 module.exports = Minion;

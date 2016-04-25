@@ -1,5 +1,5 @@
 "use strict";
-var Card = require('./../match/objects/Card');
+var Card = require('./../match/objects/card/MinionCard');
 
 var NodeCouchDb = require('node-couchdb');
 
@@ -15,23 +15,27 @@ class CardTemplate {
      * @param name
      * @param type
      */
-    constructor(name, type, cost) {
+    constructor(name, type, privilege) {
         this.name = name;
         this.type = type;
-        this.cost = cost
+        this.privilege = privilege;
+
+        this.attack = null;
+        this.health = null;
+        this.privilege = null;
     }
 
     /**
      * Creates a Card instance for the given player
      * @param player
      */
-    makeCardFor(player) {
-        var new_card = new Card(player, this);
-        new_card.name = this.name;
-        new_card.type = this.type;
-        new_card.cost = this.cost;
-
-        return new_card;
+    makeCardFor(match, player_board) {
+        if (this.type == 'minion') {
+            return new MinionCard(match, player_board, this);
+        }
+        else {
+            return null;
+        }
     }
 
     toString() {

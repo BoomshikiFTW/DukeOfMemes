@@ -23,11 +23,12 @@ class DeckTemplate {
      * @param player
      * @returns the new Deck object.
      */
-    createDeck(match, player) {
+    createDeck(match, player_board) {
         var new_deck = new Deck();
         for (var card_template in this.cards_templates) {
-            new_deck.addCard(card_template.makeCardFor(player));
+            new_deck.addCard(card_template.makeCardFor(match, player_board));
         }
+        player_board.set_deck(this);
         return new_deck;
     }
 }

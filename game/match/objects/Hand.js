@@ -11,9 +11,19 @@ class Hand extends GameObject {
         this.cards = []
     }
 
-    addCard(card) {
-        if (card)
+    add_card(card) {
+        if (card) {
             this.cards.push(card);
+        }
+    }
+
+    remove_card(card) {
+        this.cards.remove(card);
+        //todo: on card removed from hand trigger
+    }
+
+    has_card(card) {
+        return this.cards.contains(card);
     }
 }
 

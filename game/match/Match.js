@@ -3,6 +3,7 @@ var ActionHandler = require('./ActionHandler');
 var Player = require('./objects/Player');
 var Hand = require('./objects/Hand');
 var Board = require('./objects/Board');
+var Board = require('./objects/Graveyard');
 var PlayerBoard = require('./PlayerBoard');
 
 
@@ -16,27 +17,26 @@ class Match {
      * @param decks
      */
     constructor(deck_templates) {
-        this.players = [];
+        this.player_boards = [];
         this.whos_turn = null; //indexes this.players
         this.game_objects = {};
         this.actionHandler = new ActionHandler(this);
 
         for (var deck_template in deck_templates) {
             var new_player = new Player(this);
-            var deck = deck_template.createDeck(this, new_player);
+            var player_board = new PlayerBoard(new_player, new Hand(this), null, new Board(this), new Graveyard(this));
+            deck_template.createDeck(this, player_board);
 
-            var player_board = new PlayerBoard(new_player, new Hand(this), deck, new Board(this));
-
-            this.players.push(new_player);
+            this.player_boards.push(player_board);
         }
     }
 
-    add_gameobject(game_object) {
+    add_game_object(game_object) {
         this.game_objects[game_object.id] = game_object;
     }
 
     make_action(source_id, target_id) {
-
+        this.actionHandler.make_action(source_id, target_id);
     }
 
 
