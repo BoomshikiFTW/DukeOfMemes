@@ -1,6 +1,6 @@
 // You can use either `new PIXI.WebGLRenderer`, `new PIXI.CanvasRenderer`, or `PIXI.autoDetectRenderer`
 // which will try to choose the best renderer for the environment you are in.
-var renderer = new PIXI.WebGLRenderer(800, 600);
+var renderer = new PIXI.WebGLRenderer(1024, 768);
 
 // The renderer will create a canvas element for you that you can then insert into the DOM.
 document.body.appendChild(renderer.view);
@@ -21,9 +21,6 @@ PIXI.loader.add('bunny', 'http://i.imgur.com/6jr3M0j.png').load(function (loader
     bunny.position.x = 400;
     bunny.position.y = 300;
 
-    bunny.scale.x = 1;
-    bunny.scale.y = 1;
-
     // Add the bunny to the scene we are building.
     stage.addChild(bunny);
 
@@ -31,6 +28,44 @@ PIXI.loader.add('bunny', 'http://i.imgur.com/6jr3M0j.png').load(function (loader
     animate();
 });
 
+/*
+//Create the health bar
+healthBar = new PIXI.Container();
+healthBar.position.set(stage.width - 170, 6)
+
+//Create the black background rectangle
+var innerBar = new PIXI.Graphics();
+innerBar.beginFill(0x000000);
+innerBar.drawRect(0, 0, 128, 8);
+innerBar.endFill();
+healthBar.addChild(innerBar);
+
+//Create the front red rectangle
+var outerBar = new PIXI.Graphics();
+outerBar.beginFill(0xFF3300);
+outerBar.drawRect(0, 0, 128, 8);
+outerBar.endFill();
+healthBar.addChild(outerBar);
+
+healthBar.outer = outerBar;
+*/
+
+/**
+ * Main Setup
+ */
+
+var rectangle = new PIXI.Graphics();
+rectangle.lineStyle(4, 0xFF3300, 1);
+rectangle.beginFill(0x66CCFF);
+rectangle.drawRect(0, 0, 64, 64);
+rectangle.endFill();
+rectangle.x = 170;
+rectangle.y = 170;
+stage.addChild(rectangle);
+
+/**
+ * Helper functions
+ */
 function animate() {
     // start the timer for the next animation loop
     requestAnimationFrame(animate);
