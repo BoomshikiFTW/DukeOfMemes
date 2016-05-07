@@ -79,7 +79,7 @@ function draw(card, sound) {
             newcard.anchor.setTo(0.5, 0.5);
             newcard.position.x = newcard.width/2 + 30;
             newcard.inputEnabled = true;
-            newcard.events.onInputOver.add(function() {}, this);
+            newcard.events.onInputOver.add(function() {console.log("hovering over");}, this);
             
             game.add.existing(newcard);
             hand.push(newcard);
@@ -89,9 +89,10 @@ function draw(card, sound) {
             var raiseCardTween = game.add.tween(newcard);
             raiseCardTween.to({y:game.world.bounds.height-newcard.height/2-10}, 400, Phaser.Easing.Exponential.Out);
             raiseCardTween.onComplete.add(function() {
-                updateHand();
-                card.inputEnabled = true;
-                card.position.y = game.world.centerY;
+                updateHand(function() {
+                    card.inputEnabled = true;
+                    card.position.y = game.world.centerY;
+                });
             }, this);
             raiseCardTween.start();
         }, this);
@@ -100,9 +101,9 @@ function draw(card, sound) {
     }
 }
 
-function updateHand() {
+function updateHand(cb) {
     var _cardSpace = 130; // 130 is the assumed card width
-    var handWidth = _cardSpace * hand.length;
+    var handWidth = _cardSpace * (hand.length-1);
     var handTween;
     
     for (var i = 0; i < hand.length; i++) {
@@ -110,4 +111,6 @@ function updateHand() {
         handTween.to({x: game.world.bounds.width/2 + handWidth/2 - _cardSpace*i}, 600, Phaser.Easing.Exponential.Out);
         handTween.start();
     }
+    
+    cb();
 }
