@@ -7,7 +7,11 @@ var _cardDimensions = [[0,0],[100,0],[100,250],[0,250]];
 var cards = [];
 
 function main() {
-    game = new Phaser.Game(resX, resY, Phaser.CANVAS, 'phaser-example', { create: create });
+    game = new Phaser.Game(resX, resY, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+}
+
+function preload() {
+    game.load.image('blueeyes', 'http://pre06.deviantart.net/d4ed/th/pre/f/2013/112/6/7/blue_eyes_white_dragon_by_endergon_oscuro-d62ngx4.jpg');
 }
 
 function create() {
@@ -16,18 +20,16 @@ function create() {
     drawHand(5);
 }
 
-function update() {
-    graphics.clear();
-
-    if (cards[0].contains(game.input.x, game.input.y)) {
-        graphics.beginFill(0xFF3300);
-    } else {
-        graphics.beginFill(0xFF33ff);
-    }
-    graphics.drawRect(cards[0].points);
-
-    graphics.endFill();
-}
+// function update() {
+//     graphics.clear();
+//     if (cards[0].contains(game.input.x, game.input.y)) {
+//         graphics.beginFill(0xFF3300);
+//     } else {
+//         graphics.beginFill(0xFF33ff);
+//     }
+//     graphics.drawRect(cards[0].points);
+//     graphics.endFill();
+// }
 
 function drawHand(cardsAmount) {
     

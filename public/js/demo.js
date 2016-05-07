@@ -1,78 +1,113 @@
-// You can use either `new PIXI.WebGLRenderer`, `new PIXI.CanvasRenderer`, or `PIXI.autoDetectRenderer`
-// which will try to choose the best renderer for the environment you are in.
-var renderer = new PIXI.WebGLRenderer(1024, 768);
+var cardStates = {
+    DECK: 1000,
+    HAND: 2000,
+    FIELD: 3000,
+    DEAD: 4000
+}
+Object.freeze(cardStates);
 
-// The renderer will create a canvas element for you that you can then insert into the DOM.
-document.body.appendChild(renderer.view);
+//  Here is a custom game object
+MemeCard = function (game, x, y) {
+    Phaser.Sprite.call(this, game, x, y, 'blueeyes');
+    
+    this.scale.x = 0.16;
+    this.scale.y = 0.16;
+};
 
-// You need to create a root container that will hold the scene you want to draw.
-var stage = new PIXI.Container();
-var bunny;
+MemeCard.prototype = Object.create(Phaser.Sprite.prototype);
+MemeCard.prototype.constructor = MemeCard;
 
-// Declare a global variable for our sprite so that the animate function can access it.
-var bunny = null;
+CardBack = function(game, x, y) {
+    Phaser.Sprite.call(this, game, x, y, 'cardback');
+}
 
-// load the texture we need
-PIXI.loader.add('bunny', 'http://i.imgur.com/6jr3M0j.png').load(function (loader, resources) {
-    // This creates a texture from a 'bunny.png' image.
-    bunny = new PIXI.Sprite(resources.bunny.texture);
-
-    // Setup the position and scale of the bunny
-    bunny.position.x = 400;
-    bunny.position.y = 300;
-
-    // Add the bunny to the scene we are building.
-    stage.addChild(bunny);
-
-    // kick off the animation loop (defined below)
-    animate();
-});
-
-/*
-//Create the health bar
-healthBar = new PIXI.Container();
-healthBar.position.set(stage.width - 170, 6)
-
-//Create the black background rectangle
-var innerBar = new PIXI.Graphics();
-innerBar.beginFill(0x000000);
-innerBar.drawRect(0, 0, 128, 8);
-innerBar.endFill();
-healthBar.addChild(innerBar);
-
-//Create the front red rectangle
-var outerBar = new PIXI.Graphics();
-outerBar.beginFill(0xFF3300);
-outerBar.drawRect(0, 0, 128, 8);
-outerBar.endFill();
-healthBar.addChild(outerBar);
-
-healthBar.outer = outerBar;
-*/
+CardBack.prototype = Object.create(Phaser.Sprite.prototype);
+CardBack.prototype.constructor = CardBack;
 
 /**
- * Main Setup
+ * Automatically called by World.update
  */
+var i =0;
+MemeCard.prototype.update = function() {
+    //this.angle += this.rotateSpeed;
+    //console.log(++i);
+};
 
-var rectangle = new PIXI.Graphics();
-rectangle.lineStyle(4, 0xFF3300, 1);
-rectangle.beginFill(0x66CCFF);
-rectangle.drawRect(0, 0, 64, 64);
-rectangle.endFill();
-rectangle.x = 170;
-rectangle.y = 170;
-stage.addChild(rectangle);
+var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+var hand = [];
 
-/**
- * Helper functions
- */
-function animate() {
-    // start the timer for the next animation loop
-    requestAnimationFrame(animate);
+function preload() {
+    game.load.image('blueeyes', 'img/dragon.jpg');
+    game.load.image('cardback', 'img/yugiohback.png');
+    game.load.audio('cardflip', 'sounds/card-flip.wav');
+}
 
-    // each frame we spin the bunny around a bit
-    bunny.rotation += 0.01;
+function create() {
+    // var card = new MemeCard(game, 200, 300);
+    // card.anchor.setTo(0.5, 0.5);
+    var static_cardback = new CardBack(game, 10, game.world.centerY);
+    var cardback = new CardBack(game, 10, game.world.centerY);
+    var fx = game.add.audio('cardflip');
 
-    // this is the main render call that makes pixi draw your container and its children.
-    renderer.render(stage);
+    cardback.inputEnabled = true;
+    cardback.events.onInputDown.add(draw(cardback, fx), this);
+
+    //game.add.existing(card);
+    game.add.existing(static_cardback);
+    game.add.existing(cardback);
+
+    createOpponent();
+}
+
+function createOpponent() {
+    var opp_cardback = new CardBack(game, game.world.bounds.width-10, game.world.centerY);
+    opp_cardback.scale.x = -1;
+    opp_cardback.scale.y = -1;
+
+    game.add.existing(opp_cardback);
+}
+
+function draw(card, sound) {
+    return function () {
+        card.inputEnabled = false;
+        
+        var drawCardTween = game.add.tween(card);
+
+        drawCardTween.to({y:game.world.bounds.height}, 250, Phaser.Easing.Exponential.In);
+        drawCardTween.onComplete.add(function() {
+            var newcard = new MemeCard(game, 0, game.world.bounds.height);
+            newcard.anchor.setTo(0.5, 0.5);
+            newcard.position.x = newcard.width/2 + 30;
+            newcard.inputEnabled = true;
+            newcard.events.onInputOver.add(function() {}, this);
+            
+            game.add.existing(newcard);
+            hand.push(newcard);
+
+            console.log(newcard);
+
+            var raiseCardTween = game.add.tween(newcard);
+            raiseCardTween.to({y:game.world.bounds.height-newcard.height/2-10}, 400, Phaser.Easing.Exponential.Out);
+            raiseCardTween.onComplete.add(function() {
+                updateHand();
+                card.inputEnabled = true;
+                card.position.y = game.world.centerY;
+            }, this);
+            raiseCardTween.start();
+        }, this);
+        drawCardTween.start();
+        sound.play();
+    }
+}
+
+function updateHand() {
+    var _cardSpace = 130; // 130 is the assumed card width
+    var handWidth = _cardSpace * hand.length;
+    var handTween;
+    
+    for (var i = 0; i < hand.length; i++) {
+        handTween = game.add.tween(hand[i]);
+        handTween.to({x: game.world.bounds.width/2 + handWidth/2 - _cardSpace*i}, 600, Phaser.Easing.Exponential.Out);
+        handTween.start();
+    }
 }
